@@ -10,6 +10,11 @@ Additional features over standart fork:
 
 ![screenshot1.png](./Docs/screenshot1.png)
 
+# End of Apple Era
+Apple taking control from hardware by small steps. Now it is not possible develop software without having a paid Developer Certificate. Now it is not possible to call `task_for_pid` required to get detailed information on a running process (check how much memory / cpu time it been taken). I'm not going to continue developing for this dead pice of hardware.
+
+* https://github.com/axet/MenuMeters/tree/task_for_pid
+
 # Usage:
 If you just want to use it, please go to http://member.ipmu.jp/yuji.tachikawa/MenuMetersElCapitan/ and download the binary there. Note: as written there, you might need to log out and log in (or maybe to reboot) once to enable the new version.
 
