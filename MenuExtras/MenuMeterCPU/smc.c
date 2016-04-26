@@ -168,9 +168,8 @@ kern_return_t SMCReadKey(UInt32Char_t key, SMCVal_t *val)
     return kIOReturnSuccess;
 }
 
-double SMCGetTemperature()
+double SMCGetTemperature(char *key)
 {
-    char* key = "FNum";
     SMCVal_t val;
     kern_return_t result;
 
@@ -200,8 +199,9 @@ float SMCGetFanSpeed(int fanNum)
     return _strtof((unsigned char*)val.bytes, val.dataSize, 2);
 }
 
-int SMCGetFanNumber(char *key)
+int SMCGetFanNumber()
 {
+    char *key = "FNum";
     SMCVal_t val;
     kern_return_t result;
 
