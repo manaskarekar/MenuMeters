@@ -286,11 +286,15 @@ const char* TEMPS_SHORT[][2] = {
             [temp setEnabled:NO];
         }
     }
+
+    int fun = SMCGetFanNumber("FNum");
+    if (fun > 0)
+    {
+        menuItem = (NSMenuItem *)[extraMenu addItemWithTitle:@"" action:nil keyEquivalent:@""];
+        kCPURPMMenuIndex = [extraMenu indexOfItem:menuItem];
+        [menuItem setEnabled:NO];
+    }
     SMCClose();
-    
-    menuItem = (NSMenuItem *)[extraMenu addItemWithTitle:@"" action:nil keyEquivalent:@""];
-    kCPURPMMenuIndex = [extraMenu indexOfItem:menuItem];
-    [menuItem setEnabled:NO];
 
 	// And the "Open Process Viewer"/"Open Activity Monitor" and "Open Console" item
 	[extraMenu addItem:[NSMenuItem separatorItem]];
@@ -490,14 +494,17 @@ const char* TEMPS_SHORT[][2] = {
         }
     }
     {
-        NSMutableString *name = [[NSMutableString alloc] init];
-        [name appendString:@"    RPM"];
         int max = SMCGetFanNumber("FNum");
-        for(int i = 0; i < max; i++) {
-            int speed = SMCGetFanSpeed(i);
-            [name appendFormat:@" / %d", speed];
+        if (max > 0)
+        {
+            NSMutableString *name = [[NSMutableString alloc] init];
+            [name appendString:@"    RPM"];
+            for(int i = 0; i < max; i++) {
+                int speed = SMCGetFanSpeed(i);
+                [name appendFormat:@" / %d", speed];
+            }
+            LiveUpdateMenuItemTitle(extraMenu, kCPURPMMenuIndex, name);
         }
-        LiveUpdateMenuItemTitle(extraMenu, kCPURPMMenuIndex, name);
     }
     SMCClose();
 
