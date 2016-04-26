@@ -104,7 +104,7 @@ kern_return_t SMCClose();
 // prototypes
 const int hasBattery();
 float SMCGetFanSpeed(int fanNum);
-int SMCGetFanNumber(char *key);
+int SMCGetFanNumber();
 double SMCGetTemperature(char *key);
 const char* getBatteryHealth();
 int getDesignCycleCount();

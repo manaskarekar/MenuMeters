@@ -168,8 +168,9 @@ kern_return_t SMCReadKey(UInt32Char_t key, SMCVal_t *val)
     return kIOReturnSuccess;
 }
 
-double SMCGetTemperature(char *key)
+double SMCGetTemperature()
 {
+    char* key = "FNum";
     SMCVal_t val;
     kern_return_t result;
 

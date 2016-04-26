@@ -494,7 +494,7 @@ const char* TEMPS_SHORT[][2] = {
         }
     }
     {
-        int max = SMCGetFanNumber("FNum");
+        int max = SMCGetFanNumber();
         if (max > 0)
         {
             NSMutableString *name = [[NSMutableString alloc] init];
