@@ -9,8 +9,6 @@
             <connections>
                 <outlet property="_window" destination="12" id="119"/>
                 <outlet property="cpuAvgProcs" destination="392" id="394"/>
-                <outlet property="cpuGraphWidth" destination="172" id="179"/>
-                <outlet property="cpuGraphWidthLabel" destination="401" id="547"/>
                 <outlet property="cpuInterval" destination="152" id="176"/>
                 <outlet property="cpuIntervalDisplay" destination="154" id="175"/>
                 <outlet property="cpuMeterToggle" destination="144" id="173"/>
@@ -70,7 +68,7 @@
             </connections>
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
-        <customObject id="-3" userLabel="Application"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <window title="MenuMeters" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" deferred="NO" oneShot="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" animationBehavior="default" id="12" userLabel="PrefPane">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
@@ -95,84 +93,6 @@
                                             <rect key="frame" x="-3" y="-3" width="554" height="571"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES"/>
                                             <subviews>
-                                                <popUpButton verticalHuggingPriority="750" id="481">
-                                                    <rect key="frame" x="313" y="214" width="192" height="26"/>
-                                                    <autoresizingMask key="autoresizingMask"/>
-                                                    <popUpButtonCell key="cell" type="push" title="s'illuminant" bezelStyle="rounded" alignment="left" lineBreakMode="clipping" state="on" borderStyle="borderAndBezel" inset="2" arrowPosition="arrowAtCenter" preferredEdge="maxY" selectedItem="479" id="1031">
-                                                        <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
-                                                        <font key="font" metaFont="system"/>
-                                                        <menu key="menu" title="OtherViews" id="477">
-                                                            <items>
-                                                                <menuItem title="s'illuminant" state="on" id="479"/>
-                                                                <menuItem title="clignotant" id="478"/>
-                                                                <menuItem title="illumination inversée" id="497"/>
-                                                                <menuItem title="clignotement inversé" id="498"/>
-                                                            </items>
-                                                        </menu>
-                                                    </popUpButtonCell>
-                                                    <connections>
-                                                        <action selector="cpuPrefChange:" target="-2" id="485"/>
-                                                    </connections>
-                                                </popUpButton>
-                                                <button id="476">
-                                                    <rect key="frame" x="50" y="219" width="260" height="18"/>
-                                                    <autoresizingMask key="autoresizingMask"/>
-                                                    <buttonCell key="cell" type="check" title="Le PowerMate affiche l'usage CPU en :" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="1030">
-                                                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                                                        <font key="font" metaFont="system"/>
-                                                    </buttonCell>
-                                                    <connections>
-                                                        <action selector="cpuPrefChange:" target="-2" id="484"/>
-                                                    </connections>
-                                                </button>
-                                                <box verticalHuggingPriority="750" title="Box" boxType="separator" titlePosition="noTitle" id="421">
-                                                    <rect key="frame" x="83" y="179" width="449" height="5"/>
-                                                    <autoresizingMask key="autoresizingMask"/>
-                                                    <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
-                                                    <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                                    <font key="titleFont" metaFont="system"/>
-                                                </box>
-                                                <textField verticalHuggingPriority="750" id="420">
-                                                    <rect key="frame" x="18" y="178" width="61" height="17"/>
-                                                    <autoresizingMask key="autoresizingMask"/>
-                                                    <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="left" title="Couleurs" id="1029">
-                                                        <font key="font" metaFont="system"/>
-                                                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                                                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                                                    </textFieldCell>
-                                                </textField>
-                                                <box verticalHuggingPriority="750" title="Box" boxType="separator" titlePosition="noTitle" id="418">
-                                                    <rect key="frame" x="133" y="275" width="399" height="5"/>
-                                                    <autoresizingMask key="autoresizingMask"/>
-                                                    <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
-                                                    <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                                    <font key="titleFont" metaFont="system"/>
-                                                </box>
-                                                <textField verticalHuggingPriority="750" id="417">
-                                                    <rect key="frame" x="18" y="274" width="110" height="17"/>
-                                                    <autoresizingMask key="autoresizingMask"/>
-                                                    <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="left" title="Options diverses" id="1028">
-                                                        <font key="font" metaFont="system"/>
-                                                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                                                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                                                    </textFieldCell>
-                                                </textField>
-                                                <box verticalHuggingPriority="750" title="Box" boxType="separator" titlePosition="noTitle" id="415">
-                                                    <rect key="frame" x="175" y="349" width="357" height="5"/>
-                                                    <autoresizingMask key="autoresizingMask"/>
-                                                    <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
-                                                    <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                                    <font key="titleFont" metaFont="system"/>
-                                                </box>
-                                                <textField verticalHuggingPriority="750" id="414">
-                                                    <rect key="frame" x="18" y="349" width="152" height="17"/>
-                                                    <autoresizingMask key="autoresizingMask"/>
-                                                    <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="left" title="Affichage du graphique" id="1027">
-                                                        <font key="font" metaFont="system"/>
-                                                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                                                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                                                    </textFieldCell>
-                                                </textField>
                                                 <box verticalHuggingPriority="750" title="Box" boxType="separator" titlePosition="noTitle" id="412">
                                                     <rect key="frame" x="190" y="415" width="342" height="5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
@@ -189,32 +109,12 @@
                                                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                     </textFieldCell>
                                                 </textField>
-                                                <textField verticalHuggingPriority="750" id="401">
-                                                    <rect key="frame" x="49" y="321" width="149" height="17"/>
-                                                    <autoresizingMask key="autoresizingMask"/>
-                                                    <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="right" title="Largeur du graphique :" id="1025">
-                                                        <font key="font" metaFont="system"/>
-                                                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                                                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                                                    </textFieldCell>
-                                                </textField>
-                                                <button id="392">
-                                                    <rect key="frame" x="50" y="242" width="451" height="18"/>
-                                                    <autoresizingMask key="autoresizingMask"/>
-                                                    <buttonCell key="cell" type="check" title="Afficher la charge moyenne des processeurs comme pour un simple" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="1024">
-                                                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                                                        <font key="font" metaFont="system"/>
-                                                    </buttonCell>
-                                                    <connections>
-                                                        <action selector="cpuPrefChange:" target="-2" id="393"/>
-                                                    </connections>
-                                                </button>
                                                 <popUpButton verticalHuggingPriority="750" id="383">
                                                     <rect key="frame" x="222" y="385" width="272" height="26"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <popUpButtonCell key="cell" type="push" title="Utilisateur &amp; Système (texte petit)" bezelStyle="rounded" alignment="left" lineBreakMode="clipping" state="on" borderStyle="borderAndBezel" inset="2" arrowPosition="arrowAtCenter" preferredEdge="maxY" selectedItem="385" id="1023">
                                                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                                        <font key="font" metaFont="system"/>
+                                                        <font key="font" metaFont="menu"/>
                                                         <menu key="menu" title="OtherViews" id="382">
                                                             <items>
                                                                 <menuItem title="Total (texte large)" id="384"/>
@@ -236,50 +136,6 @@
                                                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                     </textFieldCell>
                                                 </textField>
-                                                <slider verticalHuggingPriority="750" id="172">
-                                                    <rect key="frame" x="203" y="314" width="299" height="17"/>
-                                                    <autoresizingMask key="autoresizingMask"/>
-                                                    <sliderCell key="cell" controlSize="small" alignment="left" minValue="11" maxValue="88" doubleValue="33" tickMarkPosition="below" numberOfTickMarks="8" allowsTickMarkValuesOnly="YES" sliderType="linear" id="1021">
-                                                        <font key="font" size="12" name="Helvetica"/>
-                                                    </sliderCell>
-                                                    <connections>
-                                                        <action selector="cpuPrefChange:" target="-2" id="186"/>
-                                                    </connections>
-                                                </slider>
-                                                <textField verticalHuggingPriority="750" id="166">
-                                                    <rect key="frame" x="282" y="153" width="100" height="14"/>
-                                                    <autoresizingMask key="autoresizingMask"/>
-                                                    <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="center" title="Charge système" id="1020">
-                                                        <font key="font" metaFont="smallSystem"/>
-                                                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                                                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                                                    </textFieldCell>
-                                                </textField>
-                                                <textField verticalHuggingPriority="750" id="165">
-                                                    <rect key="frame" x="172" y="153" width="100" height="14"/>
-                                                    <autoresizingMask key="autoresizingMask"/>
-                                                    <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="center" title="Charge utilisateur" id="1019">
-                                                        <font key="font" metaFont="smallSystem"/>
-                                                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                                                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                                                    </textFieldCell>
-                                                </textField>
-                                                <colorWell id="164">
-                                                    <rect key="frame" x="196" y="115" width="53" height="30"/>
-                                                    <autoresizingMask key="autoresizingMask"/>
-                                                    <color key="color" red="0.058130499000000002" green="0.055541898999999999" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <connections>
-                                                        <action selector="cpuPrefChange:" target="-2" id="187"/>
-                                                    </connections>
-                                                </colorWell>
-                                                <colorWell id="163">
-                                                    <rect key="frame" x="306" y="115" width="53" height="30"/>
-                                                    <autoresizingMask key="autoresizingMask"/>
-                                                    <color key="color" red="0.058130499000000002" green="0.055541898999999999" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <connections>
-                                                        <action selector="cpuPrefChange:" target="-2" id="188"/>
-                                                    </connections>
-                                                </colorWell>
                                                 <textField verticalHuggingPriority="750" id="154">
                                                     <rect key="frame" x="273" y="486" width="54" height="17"/>
                                                     <autoresizingMask key="autoresizingMask"/>
@@ -319,6 +175,113 @@
                                                         <action selector="cpuPrefChange:" target="-2" id="192"/>
                                                     </connections>
                                                 </button>
+                                                <popUpButton verticalHuggingPriority="750" id="481">
+                                                    <rect key="frame" x="313" y="291" width="192" height="26"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <popUpButtonCell key="cell" type="push" title="s'illuminant" bezelStyle="rounded" alignment="left" lineBreakMode="clipping" state="on" borderStyle="borderAndBezel" inset="2" arrowPosition="arrowAtCenter" preferredEdge="maxY" selectedItem="479" id="1031">
+                                                        <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
+                                                        <font key="font" metaFont="menu"/>
+                                                        <menu key="menu" title="OtherViews" id="477">
+                                                            <items>
+                                                                <menuItem title="s'illuminant" state="on" id="479"/>
+                                                                <menuItem title="clignotant" id="478"/>
+                                                                <menuItem title="illumination inversée" id="497"/>
+                                                                <menuItem title="clignotement inversé" id="498"/>
+                                                            </items>
+                                                        </menu>
+                                                    </popUpButtonCell>
+                                                    <connections>
+                                                        <action selector="cpuPrefChange:" target="-2" id="485"/>
+                                                    </connections>
+                                                </popUpButton>
+                                                <button id="476">
+                                                    <rect key="frame" x="50" y="296" width="260" height="18"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <buttonCell key="cell" type="check" title="Le PowerMate affiche l'usage CPU en :" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="1030">
+                                                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                                        <font key="font" metaFont="system"/>
+                                                    </buttonCell>
+                                                    <connections>
+                                                        <action selector="cpuPrefChange:" target="-2" id="484"/>
+                                                    </connections>
+                                                </button>
+                                                <box verticalHuggingPriority="750" title="Box" boxType="separator" titlePosition="noTitle" id="421">
+                                                    <rect key="frame" x="83" y="256" width="449" height="5"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
+                                                    <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                    <font key="titleFont" metaFont="system"/>
+                                                </box>
+                                                <textField verticalHuggingPriority="750" id="420">
+                                                    <rect key="frame" x="18" y="255" width="61" height="17"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="left" title="Couleurs" id="1029">
+                                                        <font key="font" metaFont="system"/>
+                                                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                    </textFieldCell>
+                                                </textField>
+                                                <box verticalHuggingPriority="750" title="Box" boxType="separator" titlePosition="noTitle" id="418">
+                                                    <rect key="frame" x="133" y="352" width="399" height="5"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
+                                                    <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                    <font key="titleFont" metaFont="system"/>
+                                                </box>
+                                                <textField verticalHuggingPriority="750" id="417">
+                                                    <rect key="frame" x="18" y="351" width="110" height="17"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="left" title="Options diverses" id="1028">
+                                                        <font key="font" metaFont="system"/>
+                                                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                    </textFieldCell>
+                                                </textField>
+                                                <button id="392">
+                                                    <rect key="frame" x="50" y="319" width="451" height="18"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <buttonCell key="cell" type="check" title="Afficher la charge moyenne des processeurs comme pour un simple" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="1024">
+                                                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                                        <font key="font" metaFont="system"/>
+                                                    </buttonCell>
+                                                    <connections>
+                                                        <action selector="cpuPrefChange:" target="-2" id="393"/>
+                                                    </connections>
+                                                </button>
+                                                <textField verticalHuggingPriority="750" id="166">
+                                                    <rect key="frame" x="282" y="230" width="100" height="14"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="center" title="Charge système" id="1020">
+                                                        <font key="font" metaFont="smallSystem"/>
+                                                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                    </textFieldCell>
+                                                </textField>
+                                                <textField verticalHuggingPriority="750" id="165">
+                                                    <rect key="frame" x="172" y="230" width="100" height="14"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="center" title="Charge utilisateur" id="1019">
+                                                        <font key="font" metaFont="smallSystem"/>
+                                                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                    </textFieldCell>
+                                                </textField>
+                                                <colorWell id="164">
+                                                    <rect key="frame" x="196" y="192" width="53" height="30"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <color key="color" red="0.058130499000000002" green="0.055541898999999999" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <connections>
+                                                        <action selector="cpuPrefChange:" target="-2" id="187"/>
+                                                    </connections>
+                                                </colorWell>
+                                                <colorWell id="163">
+                                                    <rect key="frame" x="306" y="192" width="53" height="30"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <color key="color" red="0.058130499000000002" green="0.055541898999999999" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <connections>
+                                                        <action selector="cpuPrefChange:" target="-2" id="188"/>
+                                                    </connections>
+                                                </colorWell>
                                             </subviews>
                                         </customView>
                                     </subviews>
@@ -347,7 +310,7 @@
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <popUpButtonCell key="cell" type="push" title="ouvre le volume dans le Finder" bezelStyle="rounded" alignment="left" lineBreakMode="clipping" state="on" borderStyle="borderAndBezel" inset="2" arrowPosition="arrowAtCenter" preferredEdge="maxY" selectedItem="500" id="1012">
                                                         <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
-                                                        <font key="font" metaFont="system"/>
+                                                        <font key="font" metaFont="menu"/>
                                                         <menu key="menu" title="OtherViews" id="503">
                                                             <items>
                                                                 <menuItem title="ouvre le volume dans le Finder" state="on" id="500"/>
@@ -382,7 +345,7 @@
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <popUpButtonCell key="cell" type="push" title="ImageSet" bezelStyle="rounded" alignment="left" lineBreakMode="clipping" state="on" borderStyle="borderAndBezel" inset="2" arrowPosition="arrowAtCenter" preferredEdge="maxY" selectedItem="203" id="1009">
                                                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                                        <font key="font" metaFont="system"/>
+                                                        <font key="font" metaFont="menu"/>
                                                         <menu key="menu" title="OtherViews" id="206">
                                                             <items>
                                                                 <menuItem title="ImageSet" state="on" id="203"/>
@@ -709,7 +672,7 @@
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <popUpButtonCell key="cell" type="push" bezelStyle="rounded" alignment="left" lineBreakMode="clipping" borderStyle="borderAndBezel" inset="2" arrowPosition="arrowAtCenter" preferredEdge="maxY" id="1034">
                                                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                                        <font key="font" metaFont="system"/>
+                                                        <font key="font" metaFont="menu"/>
                                                         <menu key="menu" title="OtherViews" id="223">
                                                             <items>
                                                                 <menuItem title="Diagramme" id="225"/>
@@ -779,7 +742,7 @@
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <popUpButtonCell key="cell" type="push" title="Transmission/Réception" bezelStyle="rounded" alignment="left" lineBreakMode="clipping" state="on" borderStyle="borderAndBezel" inset="2" arrowPosition="arrowAtCenter" preferredEdge="maxY" selectedItem="590" id="1076">
                                                         <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
-                                                        <font key="font" metaFont="system"/>
+                                                        <font key="font" metaFont="menu"/>
                                                         <menu key="menu" title="OtherViews" id="591">
                                                             <items>
                                                                 <menuItem title="Transmission/Réception" state="on" id="590"/>
@@ -805,7 +768,7 @@
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <popUpButtonCell key="cell" type="push" title="Linéaire" bezelStyle="rounded" alignment="left" lineBreakMode="clipping" state="on" borderStyle="borderAndBezel" inset="2" arrowPosition="arrowAtCenter" preferredEdge="maxY" selectedItem="541" id="1074">
                                                         <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
-                                                        <font key="font" metaFont="system"/>
+                                                        <font key="font" metaFont="menu"/>
                                                         <menu key="menu" title="OtherViews" id="542">
                                                             <items>
                                                                 <menuItem title="Linéaire" state="on" id="541"/>
@@ -833,7 +796,7 @@
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <popUpButtonCell key="cell" type="push" title="Vitesse du trafic sur l'interface" bezelStyle="rounded" alignment="left" lineBreakMode="clipping" state="on" borderStyle="borderAndBezel" inset="2" arrowPosition="arrowAtCenter" preferredEdge="maxY" selectedItem="525" id="1072">
                                                         <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
-                                                        <font key="font" metaFont="system"/>
+                                                        <font key="font" metaFont="menu"/>
                                                         <menu key="menu" title="OtherViews" id="522">
                                                             <items>
                                                                 <menuItem title="Vitesse du trafic sur l'interface" state="on" id="525"/>
@@ -875,7 +838,7 @@
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <popUpButtonCell key="cell" type="push" title="Primaire (automatique)" bezelStyle="rounded" alignment="left" lineBreakMode="clipping" state="on" borderStyle="borderAndBezel" inset="2" arrowPosition="arrowAtCenter" preferredEdge="maxY" selectedItem="487" id="1069">
                                                         <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
-                                                        <font key="font" metaFont="system"/>
+                                                        <font key="font" metaFont="menu"/>
                                                         <menu key="menu" title="OtherViews" id="489">
                                                             <items>
                                                                 <menuItem title="Primaire (automatique)" state="on" id="487"/>
@@ -948,7 +911,7 @@
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <popUpButtonCell key="cell" type="push" title="Standard" bezelStyle="rounded" alignment="left" lineBreakMode="clipping" state="on" borderStyle="borderAndBezel" inset="2" arrowPosition="arrowAtCenter" preferredEdge="maxY" selectedItem="406" id="1064">
                                                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                                        <font key="font" metaFont="system"/>
+                                                        <font key="font" metaFont="menu"/>
                                                         <menu key="menu" title="OtherViews" id="403">
                                                             <items>
                                                                 <menuItem title="Standard" state="on" id="406"/>
@@ -1060,7 +1023,7 @@
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <popUpButtonCell key="cell" type="push" title="Graphique, Flèches &amp; Texte" bezelStyle="rounded" alignment="left" lineBreakMode="clipping" state="on" borderStyle="borderAndBezel" inset="2" arrowPosition="arrowAtCenter" preferredEdge="maxY" selectedItem="366" id="1055">
                                                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                                        <font key="font" metaFont="system"/>
+                                                        <font key="font" metaFont="menu"/>
                                                         <menu key="menu" title="OtherViews" id="293">
                                                             <items>
                                                                 <menuItem title="Flèches" id="297"/>
