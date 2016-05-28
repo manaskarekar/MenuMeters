@@ -4,11 +4,16 @@ Additional features over standart fork:
 
 * Short titles for MEM and CPU metters
 * CPU Graph History
-* Temperature monitor
+* Temperature monitors
+* Fan speed monitor
 
 # Screenshots
 
 ![screenshot1.png](./Docs/screenshot1.png)
+
+# Alernate branches
+
+CPU load monitor not possible to acomplish due to Apple restrictions.
 
 * https://github.com/axet/MenuMeters/tree/task_for_pid
 
