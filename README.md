@@ -13,7 +13,7 @@ Additional features over standart fork:
 
 # Alernate branches
 
-CPU load monitor not possible to acomplish due to Apple restrictions.
+CPU / Memory per process load monitor not possible to acomplish due to Apple restrictions.
 
 * https://github.com/axet/MenuMeters/tree/task_for_pid
 
