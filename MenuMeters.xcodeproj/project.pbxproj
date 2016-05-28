@@ -1992,7 +1992,7 @@
 				PACKAGE_SOURCE_ITEM_4 = "MenuCracker/Artistic License.rtf";
 				PACKAGE_SOURCE_ITEM_5 = "Docs/MenuMeters FAQ.rtf";
 				PRODUCT_NAME = MenuMeters;
-				PRODUCT_VERSION = 1.8.1;
+				PRODUCT_VERSION = 1.9.3;
 				RSRCFORK_SOURCE_ITEM_1 = "Docs/Website - Donate.webloc";
 				STRIP_NIBS = 0;
 			};
@@ -2072,7 +2072,7 @@
 				PACKAGE_SOURCE_ITEM_4 = "MenuCracker/Artistic License.rtf";
 				PACKAGE_SOURCE_ITEM_5 = "Docs/MenuMeters FAQ.rtf";
 				PRODUCT_NAME = MenuMeters;
-				PRODUCT_VERSION = 1.3.1d1;
+				PRODUCT_VERSION = 1.9.3;
 				RSRCFORK_SOURCE_ITEM_1 = "Docs/Website - Donate.webloc";
 				STRIP_NIBS = 0;
 			};
