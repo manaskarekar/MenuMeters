@@ -1,9 +1,10 @@
 PROGRAM=           MenuMeters
+VERSION=           1.96+emc
 DISTDIR=           ./dist
 DEPSDIR=           ./deps
 BINARIES=          /tmp/MenuMeters.dst
 TARGET=            PrefPane
-DMGFILE=           $(PROGRAM).dmg
+DMGFILE=           $(PROGRAM)-$(VERSION).dmg
 PRODUCT=           $(DISTDIR)/$(PROGRAM).pkg
 COMPONENT=         $(DEPSDIR)/$(PROGRAM)Component.pkg
 COMPONENT_PFILE=   $(PROGRAM).plist
