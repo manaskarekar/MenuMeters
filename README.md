@@ -36,7 +36,9 @@ the instructions in [Build](#build).
 -----
 
 Copyright (c) 2015 Alex Harper
+
 Copyright (c) 2015-2017 Yuji Tachikawa
+
 Copyright (c) 2016-2017 Enrico M. Crisostomo
 
 This program is free software; you can redistribute it and/or modify it under
