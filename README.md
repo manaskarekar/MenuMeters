@@ -2,9 +2,9 @@ MenuMeters
 ==========
 
 `MenuMeters` is a set of CPU, memory, disk, and network monitoring tools for
-macOS.  Originally created by Alex Harper, development stopped in 2015 and
-`MenuMeters` stopped working on OS X El Capitan.  my fork of `MenuMeters` for El
-Capitan.
+macOS.  [Originally][original] created by Alex Harper, development stopped in
+2015 and `MenuMeters` stopped working on OS X El Capitan.  my fork of
+`MenuMeters` for El Capitan.
 
 A [fork] was created on GitHub and the compatibility issues with OS X were
 fixed.  The fork is being actively maintained.
@@ -29,5 +29,6 @@ Installing
 release][latest].  If you prefer to build the installer from source, just follow
 the instructions in [Build](#build).
 
+[original]: http://www.ragingmenace.com/software/menumeters/
 [fork]: https://github.com/yujitach/MenuMeters
 [latest]: https://github.com/emcrisostomo/MenuMeters/releases/latest
