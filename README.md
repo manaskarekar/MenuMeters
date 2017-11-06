@@ -26,8 +26,8 @@ Installing
 ----------
 
 MenuMeters can be installed downloading the DMG archive of the [latest
-release][latest].  If you prefer to build the installer from source, just
-following the instructions in [Build](#build).
+release][latest].  If you prefer to build the installer from source, just follow
+the instructions in [Build](#build).
 
 [fork]: https://github.com/yujitach/MenuMeters
 [latest]: https://github.com/emcrisostomo/MenuMeters/releases/latest
