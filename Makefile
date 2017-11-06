@@ -1,5 +1,5 @@
 PROGRAM=           MenuMeters
-VERSION=           1.96+emc
+VERSION=           1.9.6.1+emc
 DISTDIR=           ./dist
 DEPSDIR=           ./deps
 BINARIES=          /tmp/MenuMeters.dst
