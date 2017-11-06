@@ -3,8 +3,7 @@ MenuMeters
 
 `MenuMeters` is a set of CPU, memory, disk, and network monitoring tools for
 macOS.  [Originally][original] created by Alex Harper, development stopped in
-2015 and `MenuMeters` stopped working on OS X El Capitan.  my fork of
-`MenuMeters` for El Capitan.
+2015 and `MenuMeters` stopped working on OS X El Capitan.
 
 A [fork] was created on GitHub and the compatibility issues with OS X were
 fixed.  The fork is being actively maintained.
