@@ -1,17 +1,25 @@
-# MenuMeters
-my fork of MenuMeters for El Capitan
+MenuMeters
+==========
 
-# Usage:
-If you just want to use it, please go to http://member.ipmu.jp/yuji.tachikawa/MenuMetersElCapitan/ and download the binary there. Note: as written there, you might need to log out and log in (or maybe to reboot) once to enable the new version.
+MenuMeters is a set of CPU, memory, disk, and network monitoring tools for
+macOS.  Originally created by Alex Harper, development stopped in 2015 and
+MenuMeters stopped working on OS X El Capitan.  my fork of MenuMeters for El
+Capitan.
 
-# Background:
+A [fork] was created on GitHub and the compatibility issues with OS X were
+fixed.  The fork is being actively maintained.
 
-It's a great utility being developed by http://www.ragingmenace.com/software/menumeters/ .
-As shown there (as of July 2015) the original version doesn't work on El Capitan Beta. 
-The basic reason is that SystemUIServer doesn't load Menu Extras not signed by Apple. 
-I'm making here a minimal modification so that it runs as a faceless app, putting NSStatusItem's instead of NSMenuExtra's.
+I created this fork because I felt the need of streamlining the build and
+release process.  I added a `Makefile` which builds MenuMeters from scratch, and
+creates a DMG archive containing a PKG installer.
 
-I contacted the author but haven't received the reply. To help people who's missing MenuMeters on El Capitan Beta, I decided to make the git repo public. 
+Building
+--------
 
-# To hack:
-Clone the git repo, open MenuMeters.xcodeproj, and build the target *PrefPane*. This should install the pref pane in your *~/Library/PreferencePanes/*. (You might need to remove the older version of MenuMeters by yourself.)
+MenuMeters can be built from sources using the following command:
+
+````
+$ make
+````
+
+[fork]: https://github.com/yujitach/MenuMeters
