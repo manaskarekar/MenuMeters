@@ -28,7 +28,7 @@ Installing
 ----------
 
 `MenuMeters` can be installed downloading the DMG archive of the [latest
-release][latest] or from the [MenuMeters web page](mm-web).  If you prefer to
+release][latest] or from the [MenuMeters web page][mm-web].  If you prefer to
 build the installer from source, just follow the instructions in
 [Build](#build).
 
