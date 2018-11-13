@@ -28,12 +28,14 @@ Installing
 ----------
 
 `MenuMeters` can be installed downloading the DMG archive of the [latest
-release][latest].  If you prefer to build the installer from source, just follow
-the instructions in [Build](#build).
+release][latest] or from the [MenuMeters web page](mm-web).  If you prefer to
+build the installer from source, just follow the instructions in
+[Build](#build).
 
 [original]: http://www.ragingmenace.com/software/menumeters/
 [fork]: https://github.com/yujitach/MenuMeters
 [latest]: https://github.com/emcrisostomo/MenuMeters/releases/latest
+[mm-web]: https://emcrisostomo.github.io/MenuMeters/
 
 -----
 
