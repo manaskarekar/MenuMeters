@@ -36,6 +36,7 @@
 - (void)renderSinglePercentIntoImage:(NSImage *)image forProcessor:(uint32_t)processor atOffset:(float)offset;
 - (void)renderSplitPercentIntoImage:(NSImage *)image forProcessor:(uint32_t)processor atOffset:(float)offset;
 - (void)renderThermometerIntoImage:(NSImage *)image forProcessor:(uint32_t)processor atOffset:(float)offset;
+- (void)renderHorizontalThermometerIntoImage:(NSImage *)image forProcessor:(uint32_t)processor atX:(float)x andY:(float)y withWidth:(float)width andHeight:(float)height;
 
 // Timer callbacks
 - (void)updateMenuWhenDown;
@@ -48,6 +49,15 @@
 
 // Prefs
 - (void)configFromPrefs:(NSNotification *)notification;
+
+// Utilities
+- (uint32_t)numberOfCPUsToDisplay;
+- (void)getCPULoadForCPU:(uint32_t)processor
+            returnSystem:(double *)system
+              returnUser:(double *)user;
+- (void)getCPULoadFromLoad:(MenuMeterCPULoad *)load
+            returnSystem:(double *)system
+              returnUser:(double *)user;
 
 @end
 
@@ -63,6 +73,7 @@
 #define kUptimeTitle						@"Uptime:"
 #define kTaskThreadTitle					@"Tasks/Threads:"
 #define kLoadAverageTitle					@"Load Average (1m, 5m, 15m):"
+#define kProcessTitle                       @"Top CPU Intensive Processes:"
 #define kOpenProcessViewerTitle				@"Open Process Viewer"
 #define kOpenActivityMonitorTitle			@"Open Activity Monitor"
 #define kOpenConsoleTitle					@"Open Console"
@@ -95,9 +106,10 @@
 
 	// Data gatherers and storage
 	cpuInfo = [[MenuMeterCPUStats alloc] init];
+    cpuTopProcesses = [[MenuMeterCPUTopProcesses alloc] init];
 	uptimeInfo = [[MenuMeterUptime alloc] init];
 	loadHistory = [NSMutableArray array];
-	if (!(cpuInfo && uptimeInfo && loadHistory)) {
+	if (!(cpuInfo && uptimeInfo && loadHistory && cpuTopProcesses)) {
 		NSLog(@"MenuMeterCPU unable to load data gatherers or storage. Abort.");
 		return nil;
 	}
@@ -114,7 +126,7 @@
 	NSMenuItem *menuItem = nil;
 
 	// Add processor info which never changes
-	if ([cpuInfo numberOfCPUs] > 1) {
+    if ([cpuInfo numberOfCPUsByCombiningLowerHalf:NO] > 1) {
 		menuItem = (NSMenuItem *)[extraMenu addItemWithTitle:[bundle localizedStringForKey:kMultiProcessorTitle value:nil table:nil]
 													  action:nil
 											   keyEquivalent:@""];
@@ -153,6 +165,18 @@
 	menuItem = (NSMenuItem *)[extraMenu addItemWithTitle:@"" action:nil keyEquivalent:@""];
 	[menuItem setEnabled:NO];
 
+    // Add top kCPUrocessCountMax most CPU intensive processes
+    menuItem = (NSMenuItem *)[extraMenu addItemWithTitle:[bundle localizedStringForKey:kProcessTitle value:nil table:nil]
+                                                  action:nil
+                                           keyEquivalent:@""];
+    [menuItem setEnabled:NO];
+    
+    // as this list is "static" unfortunately we need all of the kCPUrocessCountMax menu items and hide/show later the un-wanted/wanted ones
+    for (NSInteger ndx = 0; ndx < kCPUrocessCountMax; ++ndx) {
+        menuItem = (NSMenuItem *)[extraMenu addItemWithTitle:@"" action:nil keyEquivalent:@""];
+        [menuItem setEnabled:NO];
+    }
+    
 	// And the "Open Process Viewer"/"Open Activity Monitor" and "Open Console" item
 	[extraMenu addItem:[NSMenuItem separatorItem]];
 	menuItem = (NSMenuItem *)[extraMenu addItemWithTitle:[bundle localizedStringForKey:kOpenActivityMonitorTitle value:nil table:nil]
@@ -225,36 +249,60 @@
 	// Don't render without data
 	if (![loadHistory count]) return nil;
 
-	// Loop by processor
-	float renderOffset = 0;
-	int cpuDisplayModePrefs = [ourPrefs cpuDisplayMode];
-	for (uint32_t cpuNum = 0; cpuNum < [cpuInfo numberOfCPUs]; cpuNum++) {
-
-		// Render graph if needed
-		if (cpuDisplayModePrefs & kCPUDisplayGraph) {
-			[self renderHistoryGraphIntoImage:currentImage forProcessor:cpuNum atOffset:renderOffset];
-			// Adjust render offset
-			renderOffset += [ourPrefs cpuGraphLength];
-		}
-		// Render percent if needed
-		if (cpuDisplayModePrefs & kCPUDisplayPercent) {
-			if ([ourPrefs cpuPercentDisplay] == kCPUPercentDisplaySplit) {
-				[self renderSplitPercentIntoImage:currentImage forProcessor:cpuNum atOffset:renderOffset];
-			} else {
-				[self renderSinglePercentIntoImage:currentImage forProcessor:cpuNum atOffset:renderOffset];
+    uint32_t cpuCount = [self numberOfCPUsToDisplay];
+    // Horizontal CPU thermometer is handled differently because it has to
+    // manage rows and columns in a very different way from normal horizontal
+    // layout
+    if ([ourPrefs cpuDisplayMode] & kCPUDisplayHorizontalThermometer) {
+        // Calculate the minimum number of columns that will be needed
+        uint32_t rowCount = [ourPrefs cpuHorizontalRows];
+        uint32_t columnCount = 
+            ((cpuCount - 1) / [ourPrefs cpuHorizontalRows]) + 1;
+        // Calculate a column width
+        float columnWidth = (menuWidth - 1.0f) / columnCount;
+        // Image height
+        float imageHeight = (float) ([currentImage size].height);
+        // Calculate a thermometer height
+        float thermometerHeight = ((imageHeight - 2) / rowCount);
+        for (uint32_t cpuNum = 0; cpuNum < cpuCount; cpuNum++) {
+            float xOffset = ((cpuNum / rowCount) * columnWidth) + 1.0f;
+            float yOffset = (imageHeight -
+                             (((cpuNum % rowCount) + 1) * thermometerHeight)) - 1.0f;
+            [self renderHorizontalThermometerIntoImage:currentImage forProcessor:cpuNum atX:xOffset andY:yOffset withWidth:columnWidth andHeight:thermometerHeight];
+        }
+    }
+    else {
+		// Loop by processor
+		float renderOffset = 0;
+		int cpuDisplayModePrefs = [ourPrefs cpuDisplayMode];
+		for (uint32_t cpuNum = 0; cpuNum < cpuCount; cpuNum++) {
+			
+			// Render graph if needed
+			if (cpuDisplayModePrefs & kCPUDisplayGraph) {
+				[self renderHistoryGraphIntoImage:currentImage forProcessor:cpuNum atOffset:renderOffset];
+				// Adjust render offset
+				renderOffset += [ourPrefs cpuGraphLength];
 			}
-			renderOffset += percentWidth;
+			// Render percent if needed
+			if (cpuDisplayModePrefs & kCPUDisplayPercent) {
+				if ([ourPrefs cpuPercentDisplay] == kCPUPercentDisplaySplit) {
+					[self renderSplitPercentIntoImage:currentImage forProcessor:cpuNum atOffset:renderOffset];
+				} else {
+					[self renderSinglePercentIntoImage:currentImage forProcessor:cpuNum atOffset:renderOffset];
+				}
+				renderOffset += percentWidth;
+			}
+			if (cpuDisplayModePrefs & kCPUDisplayThermometer) {
+				[self renderThermometerIntoImage:currentImage forProcessor:cpuNum atOffset:renderOffset];
+				renderOffset += kCPUThermometerDisplayWidth;
+			}
+			// At end of each proc adjust spacing
+			renderOffset += kCPUDisplayMultiProcGapWidth;
+			
+			// If we're averaging all we're done on first iteration
+			if ([ourPrefs cpuAvgAllProcs]) break;
 		}
-		if (cpuDisplayModePrefs & kCPUDisplayThermometer) {
-			[self renderThermometerIntoImage:currentImage forProcessor:cpuNum atOffset:renderOffset];
-			renderOffset += kCPUThermometerDisplayWidth;
-		}
-		// At end of each proc adjust spacing
-		renderOffset += kCPUDisplayMultiProcGapWidth;
-
-		// If we're averaging all we're done on first iteration
-		if ([ourPrefs cpuAvgAllProcs]) break;
-	}
+    }
 
 	// Send it back for the view to render
 	return currentImage;
@@ -266,17 +314,73 @@
 	// Update the various displays starting with uptime
 	NSString *title = [NSString stringWithFormat:kMenuIndentFormat, [uptimeInfo uptime]];
 	if (title) LiveUpdateMenuItemTitle(extraMenu, kCPUUptimeInfoMenuIndex, title);
+    
 	// Tasks
 	title = [NSString stringWithFormat:kMenuIndentFormat, [cpuInfo currentProcessorTasks]];
 	if (title) LiveUpdateMenuItemTitle(extraMenu, kCPUTaskInfoMenuIndex, title);
+    
 	// Load
 	title = [NSString stringWithFormat:kMenuIndentFormat, [cpuInfo loadAverage]];
 	if (title) LiveUpdateMenuItemTitle(extraMenu, kCPULoadInfoMenuIndex, title);
-
+    
+    // Top CPU intensive processes
+    NSArray* processes = ([ourPrefs cpuMaxProcessCount] > 0 ? [cpuTopProcesses runningProcessesByCPUUsage:[ourPrefs cpuMaxProcessCount]] : nil);    
+    LiveUpdateMenuItemTitleAndVisibility(extraMenu, kCPUProcessLabelMenuIndex, nil, (processes == nil));
+    for (NSInteger ndx = 0; ndx < kCPUrocessCountMax; ++ndx) {
+        if (ndx < processes.count) {
+            NSString*name=processes[ndx][kProcessListItemProcessNameKey];
+            float percent=[processes[ndx][kProcessListItemCPUKey] floatValue];
+            title = [NSString stringWithFormat:kMenuIndentFormat, [NSString stringWithFormat:@"%@ (%.1f%%)", name,percent ]];
+            NSMenuItem*mi=[extraMenu itemAtIndex: kCPUProcessMenuIndex + ndx];
+            mi.title=title;
+            mi.hidden=title.length==0;
+            
+            
+            NSNumber* pid=processes[ndx][kProcessListItemPIDKey];
+            NSRunningApplication*app=[NSRunningApplication runningApplicationWithProcessIdentifier:pid.intValue];
+            NSImage*icon=app.icon;
+            if(!icon){
+                static NSImage*defaultIcon=nil;
+                if(!defaultIcon){
+                    defaultIcon=[[NSWorkspace sharedWorkspace] iconForFile:@"/bin/bash"];
+                }
+                icon=defaultIcon;
+            }
+            icon.size=NSMakeSize(16, 16);
+            mi.image=icon;
+        }
+        else {
+            LiveUpdateMenuItemTitleAndVisibility(extraMenu, kCPUProcessMenuIndex + ndx, nil, YES);
+        }
+    }
+    
 	// Send the menu back to SystemUIServer
 	return extraMenu;
 
 } // menu
+
+///////////////////////////////////////////////////////////////
+//
+//    NSMenuDelegate
+//
+///////////////////////////////////////////////////////////////
+
+- (void)menuWillOpen:(NSMenu *)menu {
+    
+    if ([ourPrefs cpuMaxProcessCount] > 0)
+        [cpuTopProcesses startUpdateProcessList];
+     
+    [super menuWillOpen:menu];
+    
+} // menuWillOpen:
+
+- (void)menuDidClose:(NSMenu *)menu {
+
+    [cpuTopProcesses stopUpdateProcessList];
+
+    [super menuDidClose:menu];
+
+} // menuDidClose:
 
 ///////////////////////////////////////////////////////////////
 //
@@ -295,26 +399,27 @@
 	[systemPath moveToPoint:NSMakePoint(offset, 0)];
 	[userPath moveToPoint:NSMakePoint(offset, 0)];
 
+    int numberOfCPUs = [self numberOfCPUsToDisplay];
+
 	// Loop over pixels in desired width until we're out of data
 	int renderPosition = 0;
 	float renderHeight = (float)[image size].height - 0.5f;  // Save space for baseline
 	int cpuGraphLength = [ourPrefs cpuGraphLength];
-	NSUInteger numberOfCPUs = [cpuInfo numberOfCPUs];
 	for (renderPosition = 0; renderPosition < cpuGraphLength; renderPosition++) {
 		// No data at this position?
 		if (renderPosition >= [loadHistory count]) break;
 
 		// Grab data
 		NSArray *loadHistoryEntry = [loadHistory objectAtIndex:renderPosition];
-		if (!loadHistoryEntry || [loadHistoryEntry count] < numberOfCPUs) {
+		if (!loadHistoryEntry || ([loadHistoryEntry count] < numberOfCPUs)) {
 			// Bad data, just skip
 			continue;
 		}
 
 		// Get load at this position.
 		MenuMeterCPULoad *load = loadHistoryEntry[processor];
-		float system = load.system;
-		float user = load.user;
+		double system = load.system;
+		double user = load.user;
 		if ([ourPrefs cpuAvgAllProcs]) {
 			for (uint32_t cpuNum = 1; cpuNum < numberOfCPUs; cpuNum++) {
 				MenuMeterCPULoad *load = loadHistoryEntry[cpuNum];
@@ -355,15 +460,16 @@
 } // renderHistoryGraphIntoImage:forProcessor:atOffset:
 
 - (void)renderSinglePercentIntoImage:(NSImage *)image forProcessor:(uint32_t)processor atOffset:(float)offset {
+    
+    int numberOfCPUs = [self numberOfCPUsToDisplay];
 
 	// Current load (if available)
 	NSArray *currentLoad = [loadHistory lastObject];
-	if (!currentLoad || ([currentLoad count] < [cpuInfo numberOfCPUs])) return;
+	if (!currentLoad || ([currentLoad count] < numberOfCPUs)) return;
 
 	MenuMeterCPULoad *load = currentLoad[processor];
 	float totalLoad = load.system + load.user;
 	if ([ourPrefs cpuAvgAllProcs]) {
-		NSUInteger numberOfCPUs = [cpuInfo numberOfCPUs];
 		for (uint32_t cpuNum = 1; cpuNum < numberOfCPUs; cpuNum++) {
 			MenuMeterCPULoad *load = currentLoad[cpuNum];
 			totalLoad += load.user + load.system;
@@ -394,27 +500,11 @@
 
 - (void)renderSplitPercentIntoImage:(NSImage *)image forProcessor:(uint32_t)processor atOffset:(float)offset {
 
-	// Current load (if available)
-	NSArray *currentLoad = [loadHistory lastObject];
-	if (!currentLoad || ([currentLoad count] < [cpuInfo numberOfCPUs])) return;
-
-	MenuMeterCPULoad *load = currentLoad[processor];
-	float system = load.system;
-	float user = load.user;
-	if ([ourPrefs cpuAvgAllProcs]) {
-		NSUInteger numberOfCPUs = [cpuInfo numberOfCPUs];
-		for (uint32_t cpuNum = 1; cpuNum < numberOfCPUs; cpuNum++) {
-			MenuMeterCPULoad *load = currentLoad[cpuNum];
-			system += load.system;
-			user += load.user;
-		}
-		system /= numberOfCPUs;
-		user /= numberOfCPUs;
-	}
-	if (system > 1) system = 1;
-	if (system < 0) system = 0;
-	if (user > 1) user = 1;
-	if (user < 0) user = 0;
+    double system, user;
+    [self getCPULoadForCPU:processor returnSystem:&system returnUser:&user];
+    if ((system < 0) || (user < 0)) {
+        return;
+    }
 
 	// Get the prerendered text and draw
 	NSImage *systemImage = [splitSystemPercentCache objectAtIndex:roundf(system * 100.0f)];
@@ -439,29 +529,14 @@
 
 } // renderSplitPercentIntoImage:forProcessor:atOffset:
 
+
 - (void)renderThermometerIntoImage:(NSImage *)image forProcessor:(uint32_t)processor atOffset:(float)offset {
 
-	// Current load (if available)
-	NSArray *currentLoad = [loadHistory lastObject];
-	if (!currentLoad || ([currentLoad count] < [cpuInfo numberOfCPUs])) return;
-
-	MenuMeterCPULoad *load = currentLoad[processor];
-	float system = load.system;
-	float user = load.user;
-	if ([ourPrefs cpuAvgAllProcs]) {
-		NSUInteger numberOfCPUs = [cpuInfo numberOfCPUs];
-		for (uint32_t cpuNum = 1; cpuNum < numberOfCPUs; cpuNum++) {
-			MenuMeterCPULoad *load = currentLoad[cpuNum];
-			system += load.system;
-			user += load.user;
-		}
-		system /= numberOfCPUs;
-		user /= numberOfCPUs;
-	}
-	if (system > 1) system = 1;
-	if (system < 0) system = 0;
-	if (user > 1) user = 1;
-	if (user < 0) user = 0;
+    double system, user;
+    [self getCPULoadForCPU:processor returnSystem:&system returnUser:&user];
+    if ((system < 0) || (user < 0)) {
+        return;
+    }
 
 	// Paths
 	float thermometerTotalHeight = (float)[image size].height - 3.0f;
@@ -486,6 +561,35 @@
 
 } // renderThermometerIntoImage:forProcessor:atOffset:
 
+- (void)renderHorizontalThermometerIntoImage:(NSImage *)image forProcessor:(uint32_t)processor atX:(float)x andY:(float)y withWidth:(float)width andHeight:(float)height {
+    double system, user;
+    [self getCPULoadForCPU:processor returnSystem:&system returnUser:&user];
+    if ((system < 0) || (user < 0)) {
+        return;
+    }
+
+	// Paths
+    NSBezierPath *rightCapPath = [NSBezierPath bezierPathWithRect:NSMakeRect((x + width) - 2.0f, y, 1.0f, height - 1.0f)];
+
+	NSBezierPath *userPath = [NSBezierPath bezierPathWithRect:NSMakeRect(x + 1.0f, y, (width - 2.0f) * ((user + system) > 1 ? 1 : (user + system)), height - 1.0f)];
+
+	NSBezierPath *systemPath = [NSBezierPath bezierPathWithRect:NSMakeRect(x + 1.0f, y, (width - 2.0f) * system, height - 1.0f)];
+
+	// Draw
+    [image lockFocus];
+	[userColor set];
+	[userPath fill];
+	[systemColor set];
+	[systemPath fill];
+    [fgMenuThemeColor set];
+    [rightCapPath fill];
+
+	// Reset
+	[[NSColor blackColor] set];
+	[image unlockFocus];
+
+} // renderHorizontalThermometerIntoImage:forProcessor:atX:andY:withWidth:andHeight:
+
 ///////////////////////////////////////////////////////////////
 //
 //	Timer callbacks
@@ -494,7 +598,8 @@
 
 - (void)timerFired:(NSTimer *)timerFired {
 	// Get the current load
-	NSArray *currentLoad = [cpuInfo currentLoad];
+	NSArray *currentLoad = [cpuInfo currentLoadBySorting:[ourPrefs cpuSortByUsage]
+                                    andCombineLowerHalf:[ourPrefs cpuAvgLowerHalfProcs]];
 	if (!currentLoad) return;
 
 	// Add to history (at least one)
@@ -531,12 +636,13 @@
 
 - (void)updatePowerMate {
 
+    int numberOfCPUs = [self numberOfCPUsToDisplay];
+
 	// Current load (if available)
 	NSArray *currentLoad = [loadHistory lastObject];
-	if (!currentLoad || ([currentLoad count] < [cpuInfo numberOfCPUs])) return;
+	if (!currentLoad || ([currentLoad count] < numberOfCPUs)) return;
 
 	double totalLoad = 0;
-	NSUInteger numberOfCPUs = [cpuInfo numberOfCPUs];
 	for (uint32_t cpuNum = 0; cpuNum < numberOfCPUs; cpuNum++) {
 		MenuMeterCPULoad *load = currentLoad[cpuNum];
 		totalLoad += load.system + load.user;
@@ -689,19 +795,25 @@
 	}
 
 	// Fix our menu size to match our new config
+    int numberOfCPUs = [self numberOfCPUsToDisplay];
 	menuWidth = 0;
-	if ([ourPrefs cpuDisplayMode] & kCPUDisplayPercent) {
-		menuWidth += (([ourPrefs cpuAvgAllProcs] ? 1 : [cpuInfo numberOfCPUs]) * percentWidth);
-	}
-	if ([ourPrefs cpuDisplayMode] & kCPUDisplayGraph) {
-		menuWidth += (([ourPrefs cpuAvgAllProcs] ? 1 : [cpuInfo numberOfCPUs]) * [ourPrefs cpuGraphLength]);
-	}
-	if ([ourPrefs cpuDisplayMode] & kCPUDisplayThermometer) {
-		menuWidth += (([ourPrefs cpuAvgAllProcs] ? 1 : [cpuInfo numberOfCPUs]) * kCPUThermometerDisplayWidth);
-	}
-	if (![ourPrefs cpuAvgAllProcs] && ([cpuInfo numberOfCPUs] > 1)) {
-		menuWidth += (([cpuInfo numberOfCPUs] - 1) * kCPUDisplayMultiProcGapWidth);
-	}
+    if ([ourPrefs cpuDisplayMode] & kCPUDisplayHorizontalThermometer) {
+        menuWidth = [ourPrefs cpuMenuWidth];
+    }
+    else {
+        if ([ourPrefs cpuDisplayMode] & kCPUDisplayPercent) {
+            menuWidth += (([ourPrefs cpuAvgAllProcs] ? 1 : numberOfCPUs) * percentWidth);
+        }
+        if ([ourPrefs cpuDisplayMode] & kCPUDisplayGraph) {
+            menuWidth += (([ourPrefs cpuAvgAllProcs] ? 1 : numberOfCPUs) * [ourPrefs cpuGraphLength]);
+        }
+        if ([ourPrefs cpuDisplayMode] & kCPUDisplayThermometer) {
+            menuWidth += (([ourPrefs cpuAvgAllProcs] ? 1 : numberOfCPUs) * kCPUThermometerDisplayWidth);
+        }
+        if (![ourPrefs cpuAvgAllProcs] && (numberOfCPUs > 1)) {
+            menuWidth += ((numberOfCPUs - 1) * kCPUDisplayMultiProcGapWidth);
+        }
+    }
 
 	// Handle PowerMate
 	if ([ourPrefs cpuPowerMate]) {
@@ -744,5 +856,40 @@
 	// Force initial update
 	[self timerFired:nil];
 } // configFromPrefs
+
+- (uint32_t)numberOfCPUsToDisplay
+{
+    return [cpuInfo numberOfCPUsByCombiningLowerHalf:[ourPrefs cpuAvgLowerHalfProcs]];
+}
+
+- (void)getCPULoadForCPU:(uint32_t)processor
+            returnSystem:(double *)system
+              returnUser:(double *)user
+{
+	NSArray *currentLoad = [loadHistory lastObject];
+	if (!currentLoad || ([currentLoad count] < processor)) {
+        *system = -1;
+        *user = -1;
+        return;
+    }
+
+    [self getCPULoadFromLoad:currentLoad[processor]
+                returnSystem:system
+                  returnUser:user];
+}
+
+- (void)getCPULoadFromLoad:(MenuMeterCPULoad *)load
+            returnSystem:(double *)system
+              returnUser:(double *)user
+{
+    *system = load.system;
+    *user = load.user;
+    // Sanity and limit
+    if (*system < 0) *system = 0;
+    if (*system > 1) *system = 1;
+    if (*user < 0) *user = 0;
+    if (*user > 1) *user = 1;
+    
+}
 
 @end

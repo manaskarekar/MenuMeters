@@ -356,10 +356,36 @@ static void scChangeCallback(SCDynamicStoreRef store, CFArrayRef changedKeys, vo
 		[ourPrefs saveCpuInterval:[cpuInterval doubleValue]];
 	} else if (sender == cpuPercentMode) {
 		[ourPrefs saveCpuPercentDisplay:(int)[cpuPercentMode indexOfSelectedItem]];
+    } else if (sender == cpuMaxProcessCount) {
+        [ourPrefs saveCpuMaxProcessCount:(int)[cpuMaxProcessCount intValue]];
 	} else if (sender == cpuGraphWidth) {
 		[ourPrefs saveCpuGraphLength:[cpuGraphWidth intValue]];
+    } else if (sender == cpuHorizontalRows) {
+        [ourPrefs saveCpuHorizontalRows:[cpuHorizontalRows intValue]];
+    } else if (sender == cpuMenuWidth) {
+        [ourPrefs saveCpuMenuWidth:[cpuMenuWidth intValue]];
 	} else if (sender == cpuAvgProcs) {
-		[ourPrefs saveCpuAvgAllProcs:(([cpuAvgProcs state] == NSOnState) ? YES : NO)];
+        bool avg = ([cpuAvgProcs state] == NSOnState) ? YES : NO;
+		[ourPrefs saveCpuAvgAllProcs:avg];
+        if (avg) {
+            [ourPrefs saveCpuAvgLowerHalfProcs:NO];
+            [ourPrefs saveCpuSortByUsage:NO];
+        }
+	} else if (sender == cpuAvgLowerHalfProcs) {
+        bool avg = ([cpuAvgLowerHalfProcs state] == NSOnState) ? YES : NO;
+		[ourPrefs saveCpuAvgLowerHalfProcs:avg];
+        if (avg) {
+            [ourPrefs saveCpuAvgAllProcs:NO];
+        }
+    } else if (sender == cpuSortByUsage) {
+        BOOL sort = ([cpuSortByUsage state] == NSOnState) ? YES : NO;
+        [ourPrefs saveCpuSortByUsage:sort];
+        if (sort) {
+            [ourPrefs saveCpuAvgAllProcs:NO];
+        }
+        else {
+            [ourPrefs saveCpuAvgLowerHalfProcs:NO];
+        }
 	} else if (sender == cpuPowerMate) {
 		[ourPrefs saveCpuPowerMate:(([cpuPowerMate state] == NSOnState) ? YES : NO)];
 	} else if (sender == cpuPowerMateMode) {
@@ -381,8 +407,15 @@ static void scChangeCallback(SCDynamicStoreRef store, CFArrayRef changedKeys, vo
 	[cpuInterval setDoubleValue:[ourPrefs cpuInterval]];
 	[cpuPercentMode selectItemAtIndex:-1]; // Work around multiselects. AppKit problem?
 	[cpuPercentMode selectItemAtIndex:[ourPrefs cpuPercentDisplay]];
+    [cpuMaxProcessCount setIntValue:[ourPrefs cpuMaxProcessCount]];
+    [cpuMaxProcessCountCountLabel setStringValue:[NSString stringWithFormat:NSLocalizedString(@"(%d)", @"DO NOT LOCALIZE!!!"),
+                                                  (short)[ourPrefs cpuMaxProcessCount]]];
 	[cpuGraphWidth setIntValue:[ourPrefs cpuGraphLength]];
+    [cpuHorizontalRows setIntValue:[ourPrefs cpuHorizontalRows]];
+    [cpuMenuWidth setIntValue:[ourPrefs cpuMenuWidth]];
 	[cpuAvgProcs setState:([ourPrefs cpuAvgAllProcs] ? NSOnState : NSOffState)];
+	[cpuAvgLowerHalfProcs setState:([ourPrefs cpuAvgLowerHalfProcs] ? NSOnState : NSOffState)];
+	[cpuSortByUsage setState:([ourPrefs cpuSortByUsage] ? NSOnState : NSOffState)];
 	[cpuPowerMate setState:([ourPrefs cpuPowerMate] ? NSOnState : NSOffState)];
 	[cpuPowerMateMode selectItemAtIndex:-1]; // Work around multiselects. AppKit problem?
 	[cpuPowerMateMode selectItemAtIndex:[ourPrefs cpuPowerMateMode]];
@@ -391,27 +424,56 @@ static void scChangeCallback(SCDynamicStoreRef store, CFArrayRef changedKeys, vo
 	[cpuIntervalDisplay takeDoubleValueFrom:cpuInterval];
 
 	// Disable controls as needed
+    if ([cpuSortByUsage state] == NSOnState) {
+        [cpuAvgProcs setEnabled:NO];
+        [cpuPercentModeLabel setTextColor:[NSColor lightGrayColor]];
+        [cpuAvgLowerHalfProcs setEnabled:YES];
+    }
+    else {
+        [cpuAvgProcs setEnabled:YES];
+        [cpuPercentModeLabel setTextColor:[NSColor controlTextColor]];
+        [cpuAvgLowerHalfProcs setEnabled:NO];
+    }
+    if ([cpuAvgProcs state] == NSOnState) {
+        [cpuSortByUsage setEnabled:NO];
+    }
+    else {
+        [cpuSortByUsage setEnabled:YES];
+    }
 	if (([cpuDisplayMode indexOfSelectedItem] + 1) & kCPUDisplayPercent) {
 		[cpuPercentMode setEnabled:YES];
-		[cpuPercentModeLabel setTextColor:[NSColor blackColor]];
+		[cpuPercentModeLabel setTextColor:[NSColor controlTextColor]];
 	} else {
 		[cpuPercentMode setEnabled:NO];
-		[cpuPercentModeLabel setTextColor:[NSColor lightGrayColor]];
+        [cpuPercentModeLabel setTextColor:[NSColor lightGrayColor]];
 	}
 	if (([cpuDisplayMode indexOfSelectedItem] + 1) & kCPUDisplayGraph) {
 		[cpuGraphWidth setEnabled:YES];
-		[cpuGraphWidthLabel setTextColor:[NSColor blackColor]];
+		[cpuGraphWidthLabel setTextColor:[NSColor controlTextColor]];
 	} else {
 		[cpuGraphWidth setEnabled:NO];
 		[cpuGraphWidthLabel setTextColor:[NSColor lightGrayColor]];
 	}
-	if ((([cpuDisplayMode indexOfSelectedItem] + 1) & (kCPUDisplayGraph | kCPUDisplayThermometer)) ||
+    if (([cpuDisplayMode indexOfSelectedItem] + 1) & kCPUDisplayHorizontalThermometer) {
+		[cpuHorizontalRows setEnabled:YES];
+		[cpuHorizontalRowsLabel setTextColor:[NSColor controlTextColor]];
+        [cpuMenuWidth setEnabled:YES];
+        [cpuMenuWidthLabel setTextColor:[NSColor controlTextColor]];
+        [cpuAvgProcs setEnabled:NO];
+    }
+    else {
+		[cpuHorizontalRows setEnabled:NO];
+		[cpuHorizontalRowsLabel setTextColor:[NSColor lightGrayColor]];
+		[cpuMenuWidth setEnabled:NO];
+		[cpuMenuWidthLabel setTextColor:[NSColor lightGrayColor]];
+    }
+	if ((([cpuDisplayMode indexOfSelectedItem] + 1) & (kCPUDisplayGraph | kCPUDisplayThermometer | kCPUDisplayHorizontalThermometer)) ||
 		((([cpuDisplayMode indexOfSelectedItem] + 1) & kCPUDisplayPercent) &&
 			([cpuPercentMode indexOfSelectedItem] == kCPUPercentDisplaySplit))) {
 		[cpuUserColor setEnabled:YES];
 		[cpuSystemColor setEnabled:YES];
-		[cpuUserColorLabel setTextColor:[NSColor blackColor]];
-		[cpuSystemColorLabel setTextColor:[NSColor blackColor]];
+		[cpuUserColorLabel setTextColor:[NSColor controlTextColor]];
+		[cpuSystemColorLabel setTextColor:[NSColor controlTextColor]];
 	} else {
 		[cpuUserColor setEnabled:NO];
 		[cpuSystemColor setEnabled:NO];
@@ -485,8 +547,8 @@ static void scChangeCallback(SCDynamicStoreRef store, CFArrayRef changedKeys, vo
 		[ourPrefs saveMemUsedFreeLabel:(([memFreeUsedLabeling state] == NSOnState) ? YES : NO)];
 	} else if (sender == memPageIndicator) {
 		[ourPrefs saveMemPageIndicator:(([memPageIndicator state] == NSOnState) ? YES : NO)];
-  } else if (sender == memPressureMode) {
-    [ourPrefs saveMemPressure:(([memPressureMode state] == NSOnState) ? YES : NO)];
+    } else if (sender == memPressureMode) {
+        [ourPrefs saveMemPressure:(([memPressureMode state] == NSOnState) ? YES : NO)];
 	} else if (sender == memGraphWidth) {
 		[ourPrefs saveMemGraphLength:[memGraphWidth intValue]];
 	} else if (sender == memActiveColor) {
@@ -513,7 +575,7 @@ static void scChangeCallback(SCDynamicStoreRef store, CFArrayRef changedKeys, vo
 	[memInterval setDoubleValue:[ourPrefs memInterval]];
 	[memFreeUsedLabeling setState:([ourPrefs memUsedFreeLabel] ? NSOnState : NSOffState)];
 	[memPageIndicator setState:([ourPrefs memPageIndicator] ? NSOnState : NSOffState)];
-  [memPressureMode setState:([ourPrefs memPressure] ? NSOnState : NSOffState)];
+    [memPressureMode setState:([ourPrefs memPressure] ? NSOnState : NSOffState)];
 	[memGraphWidth setIntValue:[ourPrefs memGraphLength]];
 	[memActiveColor setColor:[ourPrefs memActiveColor]];
 	[memInactiveColor setColor:[ourPrefs memInactiveColor]];
@@ -537,14 +599,14 @@ static void scChangeCallback(SCDynamicStoreRef store, CFArrayRef changedKeys, vo
 	}
 	if (([memDisplayMode indexOfSelectedItem] + 1) == kMemDisplayGraph) {
 		[memGraphWidth setEnabled:YES];
-		[memGraphWidthLabel setTextColor:[NSColor blackColor]];
+		[memGraphWidthLabel setTextColor:[NSColor controlTextColor]];
 	} else {
 		[memGraphWidth setEnabled:NO];
 		[memGraphWidthLabel setTextColor:[NSColor lightGrayColor]];
 	}
 	if ([memPageIndicator state] == NSOnState) {
-		[memPageinColorLabel setTextColor:[NSColor blackColor]];
-		[memPageoutColorLabel setTextColor:[NSColor blackColor]];
+		[memPageinColorLabel setTextColor:[NSColor controlTextColor]];
+		[memPageoutColorLabel setTextColor:[NSColor controlTextColor]];
 		[memPageinColor setEnabled:YES];
 		[memPageoutColor setEnabled:YES];
 	} else {
@@ -553,12 +615,12 @@ static void scChangeCallback(SCDynamicStoreRef store, CFArrayRef changedKeys, vo
 		[memPageinColor setEnabled:NO];
 		[memPageoutColor setEnabled:NO];
 	}
-  if (([memDisplayMode indexOfSelectedItem] +1) == kMemDisplayBar) {
-    [memPressureMode setEnabled:YES];
-  }
-  else {
-    [memPressureMode setEnabled:NO];
-  }
+    if (([memDisplayMode indexOfSelectedItem] +1) == kMemDisplayBar) {
+        [memPressureMode setEnabled:YES];
+    }
+    else {
+        [memPressureMode setEnabled:NO];
+    }
 
 	// Write prefs and notify
 	[ourPrefs syncWithDisk];
@@ -669,9 +731,9 @@ static void scChangeCallback(SCDynamicStoreRef store, CFArrayRef changedKeys, vo
 	}
 	if (([netDisplayMode indexOfSelectedItem] + 1) & kNetDisplayGraph) {
 		[netGraphStyle setEnabled:YES];
-		[netGraphStyleLabel setTextColor:[NSColor blackColor]];
+		[netGraphStyleLabel setTextColor:[NSColor controlTextColor]];
 		[netGraphWidth setEnabled:YES];
-		[netGraphWidthLabel setTextColor:[NSColor blackColor]];
+		[netGraphWidthLabel setTextColor:[NSColor controlTextColor]];
 	} else {
 		[netGraphStyle setEnabled:NO];
 		[netGraphStyleLabel setTextColor:[NSColor lightGrayColor]];
@@ -681,9 +743,9 @@ static void scChangeCallback(SCDynamicStoreRef store, CFArrayRef changedKeys, vo
 	if ((([netDisplayMode indexOfSelectedItem] + 1) & kNetDisplayArrows) ||
 		(([netDisplayMode indexOfSelectedItem] + 1) & kNetDisplayGraph)) {
 		[netScaleMode setEnabled:YES];
-		[netScaleModeLabel setTextColor:[NSColor blackColor]];
+		[netScaleModeLabel setTextColor:[NSColor controlTextColor]];
 		[netScaleCalc setEnabled:YES];
-		[netScaleCalcLabel setTextColor:[NSColor blackColor]];
+		[netScaleCalcLabel setTextColor:[NSColor controlTextColor]];
 	} else {
 		[netScaleMode setEnabled:NO];
 		[netScaleModeLabel setTextColor:[NSColor lightGrayColor]];
@@ -786,7 +848,7 @@ static void scChangeCallback(SCDynamicStoreRef store, CFArrayRef changedKeys, vo
 		// context
 		nil,
 		// msg
-                          @"%@",
+        @"%@",
 		[[NSBundle bundleForClass:[self class]]
 			localizedStringForKey:@"For instructions on enabling third-party menu extras please see the documentation."
 							value:nil

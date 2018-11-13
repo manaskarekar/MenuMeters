@@ -47,16 +47,24 @@
 	// Main controls
 	IBOutlet NSTabView				*prefTabs;
 	IBOutlet NSTextField			*versionDisplay;
-	// CPU pane controls
+	// CPU pane controlsaverage
 	IBOutlet NSButton				*cpuMeterToggle;
 	IBOutlet NSPopUpButton			*cpuDisplayMode;
 	IBOutlet NSTextField			*cpuIntervalDisplay;
 	IBOutlet NSSlider				*cpuInterval;
 	IBOutlet NSPopUpButton			*cpuPercentMode;
 	IBOutlet NSTextField			*cpuPercentModeLabel;
+    IBOutlet NSSlider               *cpuMaxProcessCount;
+    IBOutlet NSTextField            *cpuMaxProcessCountCountLabel;
 	IBOutlet NSSlider				*cpuGraphWidth;
 	IBOutlet NSTextField			*cpuGraphWidthLabel;
+	IBOutlet NSSlider				*cpuHorizontalRows;
+	IBOutlet NSTextField			*cpuHorizontalRowsLabel;
+    IBOutlet NSSlider               *cpuMenuWidth;
+	IBOutlet NSTextField			*cpuMenuWidthLabel;
 	IBOutlet NSButton				*cpuAvgProcs;
+    IBOutlet NSButton               *cpuAvgLowerHalfProcs;
+    IBOutlet NSButton               *cpuSortByUsage;
 	IBOutlet NSButton				*cpuPowerMate;
 	IBOutlet NSPopUpButton			*cpuPowerMateMode;
 	IBOutlet NSColorWell			*cpuUserColor;
@@ -89,7 +97,7 @@
 	IBOutlet NSTextField			*memPageinColorLabel;
 	IBOutlet NSColorWell			*memPageoutColor;
 	IBOutlet NSTextField			*memPageoutColorLabel;
-  IBOutlet NSButton         *memPressureMode;
+    IBOutlet NSButton               *memPressureMode;
 	// Net pane controls
 	IBOutlet NSButton				*netMeterToggle;
 	IBOutlet NSPopUpButton			*netDisplayMode;

@@ -8,6 +8,9 @@ macOS.  [Originally][original] created by Alex Harper, development stopped in
 A [fork] was created on GitHub and the compatibility issues with OS X were
 fixed.  The fork is being actively maintained.
 
+This fork of MenuMeters is known to work in El Capitan, Sierra, High Sierra and
+Mojave.
+
 I created this fork because I felt the need of streamlining the build and
 release process.  I added a `Makefile` which builds `MenuMeters` from scratch,
 and creates a DMG archive containing a PKG installer.
