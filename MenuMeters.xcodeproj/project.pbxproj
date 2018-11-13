@@ -661,7 +661,7 @@
 		D40DB4A703D25F2100A87BC9 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 1000;
+				LastUpgradeCheck = 1010;
 				TargetAttributes = {
 					3383C16F1B69B72500915D5D = {
 						CreatedOnToolsVersion = 7.0;
@@ -1091,7 +1091,6 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				"MACOSX_DEPLOYMENT_TARGET[sdk=macosx10.4][arch=ppc]" = 10.2;
 				"MACOSX_DEPLOYMENT_TARGET[sdk=macosx10.5][arch=*]" = 10.5;
-				PREBINDING = NO;
 				SDKROOT = macosx;
 				SEPARATE_STRIP = YES;
 				WARNING_CFLAGS = (
@@ -1145,7 +1144,6 @@
 				"MACOSX_DEPLOYMENT_TARGET[sdk=macosx10.4][arch=ppc]" = 10.2;
 				"MACOSX_DEPLOYMENT_TARGET[sdk=macosx10.5][arch=*]" = 10.5;
 				ONLY_ACTIVE_ARCH = YES;
-				PREBINDING = NO;
 				SDKROOT = macosx;
 				SEPARATE_STRIP = YES;
 				WARNING_CFLAGS = (
