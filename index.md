@@ -4,4 +4,6 @@ MenuMeters
 Binary distributions (DMG)
 --------------------------
 
-[1.9.7][/dist/1.9.7/MenuMeters-1.9.7+emc.dmg]
+Pre-built, binary packages with an installer can be downloaded here:
+
+* [1.9.7](/dist/1.9.7/MenuMeters-1.9.7+emc.dmg)
