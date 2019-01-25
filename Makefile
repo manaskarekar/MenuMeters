@@ -15,7 +15,7 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #
 PROGRAM=           MenuMeters
-VERSION=           1.9.7+emc
+VERSION=           1.9.8+emc
 DISTDIR=           ./dist
 DEPSDIR=           ./deps
 BINARIES=          /tmp/MenuMeters.dst
