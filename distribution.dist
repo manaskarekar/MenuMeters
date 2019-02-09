@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <installer-gui-script minSpecVersion="2">
-    <pkg-ref id="com.yujitach.MenuMeters"/>
+    <pkg-ref id="com.emcrisostomo.MenuMeters"/>
     <options customize="never" require-scripts="false"/>
     <volume-check>
         <allowed-os-versions>
@@ -9,12 +9,12 @@
     </volume-check>
     <choices-outline>
         <line choice="default">
-            <line choice="com.yujitach.MenuMeters"/>
+            <line choice="com.emcrisostomo.MenuMeters"/>
         </line>
     </choices-outline>
     <choice id="default"/>
-    <choice id="com.yujitach.MenuMeters" visible="false">
-        <pkg-ref id="com.yujitach.MenuMeters"/>
+    <choice id="com.emcrisostomo.MenuMeters" visible="false">
+        <pkg-ref id="com.emcrisostomo.MenuMeters"/>
     </choice>
-    <pkg-ref id="com.yujitach.MenuMeters" version="1.9.7+emc" onConclusion="none">MenuMetersComponent.pkg</pkg-ref>
+    <pkg-ref id="com.emcrisostomo.MenuMeters" version="1.9.7.1+emc" onConclusion="none">MenuMetersComponent.pkg</pkg-ref>
 </installer-gui-script>
