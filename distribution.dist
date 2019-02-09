@@ -16,5 +16,5 @@
     <choice id="com.yujitach.MenuMeters" visible="false">
         <pkg-ref id="com.yujitach.MenuMeters"/>
     </choice>
-    <pkg-ref id="com.yujitach.MenuMeters" version="1.9.4" onConclusion="none">MenuMetersComponent.pkg</pkg-ref>
+    <pkg-ref id="com.yujitach.MenuMeters" version="1.9.7" onConclusion="none">MenuMetersComponent.pkg</pkg-ref>
 </installer-gui-script>
