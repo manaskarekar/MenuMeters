@@ -1,4 +1,4 @@
-# Copyright (c) 2016-2017 Enrico M. Crisostomo
+# Copyright (c) 2016-2019 Enrico M. Crisostomo
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -15,7 +15,7 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #
 PROGRAM=           MenuMeters
-VERSION=           1.9.7.1+emc
+VERSION=           1.9.8+emc
 DISTDIR=           ./dist
 DEPSDIR=           ./deps
 BINARIES=          /tmp/MenuMeters.dst
