@@ -180,6 +180,10 @@
 	return [self loadBoolPref:kCPUAvgAllProcsPref defaultValue:kCPUAvgAllProcsDefault];
 } // cpuAvgAllProcs
 
+- (BOOL)cpuSumAllProcsPercent {
+	return [self loadBoolPref:kCPUSumAllProcsPercentPref defaultValue:kCPUSumAllProcsPercentDefault];
+} // cpuSumAllProcsPercent
+
 - (BOOL)cpuAvgLowerHalfProcs {
 	return [self loadBoolPref:kCPUAvgLowerHalfProcsPref defaultValue:kCPUAvgLowerHalfProcsDefault];
 } // cpuAvgLowerHalfProcs
@@ -206,6 +210,14 @@
 - (NSColor *)cpuUserColor {
 	return [self loadColorPref:kCPUUserColorPref defaultValue:kCPUUserColorDefault];
 } // cpuUserColor
+
+- (BOOL)cpuShowTempreture {
+    return [self loadBoolPref:kCPUShowTemperature defaultValue:kCPUShowTemperatureDefault];
+} //cpuTempreture
+
+- (NSColor *)cpuTemperatureColor {
+    return [self loadColorPref:kCPUTemperatureColor defaultValue:kCPUTemperatureColorDefault];
+} //cpuTemperatureColor
 
 - (void)saveCpuInterval:(double)interval {
 	[self saveDoublePref:kCPUIntervalPref value:interval];
@@ -239,6 +251,10 @@
 	[self saveBoolPref:kCPUAvgAllProcsPref value:average];
 } // saveCpuAvgAllProcs
 
+- (void)saveCpuSumAllProcsPercent:(BOOL)sum {
+	[self saveBoolPref:kCPUSumAllProcsPercentPref value:sum];
+} // saveCpuSumAllProcsPercent
+
 - (void)saveCpuAvgLowerHalfProcs:(BOOL)average {
 	[self saveBoolPref:kCPUAvgLowerHalfProcsPref value:average];
 } // saveCpuAvgLowerHalfProcs
@@ -254,6 +270,14 @@
 - (void)saveCpuPowerMateMode:(int)mode {
 	[self saveIntPref:kCPUPowerMateMode value:mode];
 } // saveCpuPowerMateMode
+
+- (void)saveCpuTempreture:(BOOL)show {
+    [self saveBoolPref: kCPUShowTemperature value:show];
+} // saveCpuTemperature
+
+- (void)saveCpuTempretureColor:(NSColor *)color {
+    [self saveColorPref:kCPUTemperatureColor value:color];
+} // saveCpuTempretureColor
 
 - (void)saveCpuSystemColor:(NSColor *)color {
 	[self saveColorPref:kCPUSystemColorPref value:color];
@@ -483,6 +507,10 @@
 	return [self loadBoolPref:kNetThroughput1KBoundPref defaultValue:kNetThroughput1KBoundDefault];
 } // netThroughput1KBound
 
+- (BOOL)netThroughputBits {
+	return [self loadBoolPref:kNetThroughputBitsPref defaultValue:kNetThroughputBitsDefault];
+} // netThroughputBits
+
 - (int)netGraphStyle {
 	return [self loadIntPref:kNetGraphStylePref
 					lowBound:kNetGraphStyleStandard
@@ -540,6 +568,10 @@
 - (void)saveNetThroughput1KBound:(BOOL)label {
 	[self saveBoolPref:kNetThroughput1KBoundPref value:label];
 } // saveNetThroughput1KBound
+
+- (void)saveNetThroughputBits:(BOOL)label {
+	[self saveBoolPref:kNetThroughputBitsPref value:label];
+} // saveNetThroughputBits
 
 - (void)saveNetGraphStyle:(int)style {
 	[self saveIntPref:kNetGraphStylePref value:style];

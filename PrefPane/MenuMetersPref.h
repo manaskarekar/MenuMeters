@@ -49,6 +49,7 @@
 	IBOutlet NSTextField			*versionDisplay;
 	// CPU pane controlsaverage
 	IBOutlet NSButton				*cpuMeterToggle;
+    IBOutlet NSButton               *cpuTemperatureToggle;
 	IBOutlet NSPopUpButton			*cpuDisplayMode;
 	IBOutlet NSTextField			*cpuIntervalDisplay;
 	IBOutlet NSSlider				*cpuInterval;
@@ -63,11 +64,13 @@
     IBOutlet NSSlider               *cpuMenuWidth;
 	IBOutlet NSTextField			*cpuMenuWidthLabel;
 	IBOutlet NSButton				*cpuAvgProcs;
+	IBOutlet NSButton				*cpuSumProcsPercent;
     IBOutlet NSButton               *cpuAvgLowerHalfProcs;
     IBOutlet NSButton               *cpuSortByUsage;
 	IBOutlet NSButton				*cpuPowerMate;
 	IBOutlet NSPopUpButton			*cpuPowerMateMode;
 	IBOutlet NSColorWell			*cpuUserColor;
+    IBOutlet NSColorWell            *cpuTemperatureColor;
 	IBOutlet NSTextField			*cpuUserColorLabel;
 	IBOutlet NSColorWell			*cpuSystemColor;
 	IBOutlet NSTextField			*cpuSystemColorLabel;
@@ -111,6 +114,7 @@
 	IBOutlet NSSlider				*netInterval;
 	IBOutlet NSButton				*netThroughputLabeling;
 	IBOutlet NSButton				*netThroughput1KBound;
+	IBOutlet NSButton				*netThroughputBits;
 	IBOutlet NSPopUpButton			*netGraphStyle;
 	IBOutlet NSTextField			*netGraphStyleLabel;
 	IBOutlet NSSlider				*netGraphWidth;
