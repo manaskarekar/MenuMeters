@@ -41,9 +41,9 @@ build the installer from source, just follow the instructions in
 
 Copyright (c) 2015 Alex Harper
 
-Copyright (c) 2015-2017 Yuji Tachikawa
+Copyright (c) 2015-2019 Yuji Tachikawa
 
-Copyright (c) 2016-2018 Enrico M. Crisostomo
+Copyright (c) 2016-2019 Enrico M. Crisostomo
 
 This program is free software; you can redistribute it and/or modify it under
 the terms of the GNU General Public License as published by the Free
