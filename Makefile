@@ -46,7 +46,7 @@ $(BINARIES) : compile
 
 .PHONY : compile
 compile :
-	xcodebuild -scheme $(TARGET) install
+	xcodebuild -target $(TARGET) install
 
 $(COMPONENT_PFILE) :
 	@echo "Error: Missing component pfile."
