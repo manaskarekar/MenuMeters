@@ -37,6 +37,11 @@ build the installer from source, just follow the instructions in
 [latest]: https://github.com/emcrisostomo/MenuMeters/releases/latest
 [mm-web]: https://emcrisostomo.github.io/MenuMeters/
 
+Uninstalling
+------------
+
+Go to the folder `/Library/PreferencePanes` and delete the file `MenuMeters.prefPane`.
+
 -----
 
 Copyright (c) 2015 Alex Harper
